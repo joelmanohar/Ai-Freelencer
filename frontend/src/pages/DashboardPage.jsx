@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { projectApi, proposalApi, paymentApi, categoryApi, userApi, adminApi } from '../api/client';
@@ -6,7 +6,7 @@ import ProjectCard from '../components/ProjectCard';
 import EmptyState from '../components/EmptyState';
 import { 
   Briefcase, CheckCircle2, Clock, DollarSign, Plus, 
-  Users, UserCheck, Layers, Trash2, ArrowRight, ShieldCheck 
+  Users, UserCheck, Layers, Trash2, ArrowRight, ShieldCheck, RefreshCw
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -262,29 +262,41 @@ function AdminDashboard({ user }) {
   const [paymentsList, setPaymentsList] = useState([]);
   const [newCatName, setNewCatName] = useState('');
   const [newCatDesc, setNewCatDesc] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const loadAdminData = async () => {
+  const loadAdminData = useCallback(async () => {
+    setIsRefreshing(true);
     try {
-      const [statsRes, usersRes, projRes, catRes, payRes] = await Promise.all([
+      const results = await Promise.allSettled([
         adminApi.getStats(),
         userApi.getAll(),
         projectApi.getAll(),
         categoryApi.getAll(),
         paymentApi.getAll()
       ]);
-      setStats(statsRes.data || {});
-      setUsersList(usersRes.data || []);
-      setProjectsList(projRes.data || []);
-      setCategoriesList(catRes.data || []);
-      setPaymentsList(payRes.data || []);
+      const [statsRes, usersRes, projRes, catRes, payRes] = results;
+      if (statsRes.status === 'fulfilled') setStats(statsRes.value.data || {});
+      else console.error('Failed to load admin stats:', statsRes.reason);
+      if (usersRes.status === 'fulfilled') setUsersList(usersRes.value.data || []);
+      if (projRes.status === 'fulfilled') setProjectsList(projRes.value.data || []);
+      if (catRes.status === 'fulfilled') setCategoriesList(catRes.value.data || []);
+      if (payRes.status === 'fulfilled') setPaymentsList(payRes.value.data || []);
     } catch (err) {
       console.error("Failed to load admin data:", err);
+    } finally {
+      setIsRefreshing(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadAdminData();
-  }, []);
+    const refreshInterval = window.setInterval(loadAdminData, 30000);
+    window.addEventListener('focus', loadAdminData);
+    return () => {
+      window.clearInterval(refreshInterval);
+      window.removeEventListener('focus', loadAdminData);
+    };
+  }, [loadAdminData]);
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
@@ -313,13 +325,19 @@ function AdminDashboard({ user }) {
     <div style={{ backgroundColor: '#ffffff', minHeight: 'calc(100vh - 68px)', padding: '40px 0 80px 0' }}>
       <div className="container">
         {/* Header matching screenshot 17 */}
-        <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--slate-900)', marginBottom: '4px' }}>
-            Admin Dashboard
-          </h1>
-          <p style={{ fontSize: '15px', color: 'var(--slate-500)' }}>
-            Monitor and manage the platform
-          </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '32px' }}>
+          <div>
+            <h1 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--slate-900)', marginBottom: '4px' }}>
+              Admin Dashboard
+            </h1>
+            <p style={{ fontSize: '15px', color: 'var(--slate-500)' }}>
+              Monitor and manage the platform
+            </p>
+          </div>
+          <button className="btn btn-secondary" onClick={loadAdminData} disabled={isRefreshing}>
+            <RefreshCw size={16} className={isRefreshing ? 'spin' : ''} />
+            {isRefreshing ? 'Refreshing…' : 'Refresh'}
+          </button>
         </div>
 
         {/* 6 Stat Cards matching screenshot 17 */}
