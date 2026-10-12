@@ -1,0 +1,13 @@
+{
+  "boot-java.validation.java.version-validation": "OFF",
+  "spring-boot.ls.problem.version-validation.UNSUPPORTED_OSS_VERSION": "IGNORE",
+  "spring-boot.ls.problem.version-validation.UNSUPPORTED_COMMERCIAL_VERSION": "IGNORE",
+  "spring-boot.ls.problem.version-validation.UPDATE_LATEST_PATCH_VERSION": "IGNORE",
+  "spring-boot.ls.problem.version-validation.UPDATE_LATEST_MINOR_VERSION": "IGNORE",
+  "spring-boot.ls.problem.application-yaml.YAML_UNKNOWN_PROPERTY": "IGNORE",
+  "spring-boot.ls.problem.application-properties.PROP_UNKNOWN_PROPERTY": "IGNORE",
+  "files.exclude": {
+    "**/target/classes": true
+  }
+}
+
