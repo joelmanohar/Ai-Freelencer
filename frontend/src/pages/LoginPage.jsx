@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import Logo from '../components/Logo';
@@ -7,7 +7,8 @@ import Logo from '../components/Logo';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [searchParams] = useSearchParams();
+  const [errorMsg, setErrorMsg] = useState(searchParams.get('session') === 'expired' ? 'Your session expired. Please sign in again to continue.' : '');
   const [submitting, setSubmitting] = useState(false);
 
   const { login } = useAuthStore();

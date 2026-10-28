@@ -25,6 +25,7 @@ api.interceptors.response.use(
       if (!path.includes('/login') && !path.includes('/register')) {
         localStorage.removeItem('fh_token');
         localStorage.removeItem('fh_user');
+        window.location.replace('/login?session=expired');
       }
     }
     return Promise.reject(err);
