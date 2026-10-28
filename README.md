@@ -27,22 +27,7 @@ FreelanceHub is a modern full-stack freelancer marketplace web application desig
 
 ---
 
-## 📸 Preserved UI Screenshots Catalog
 
-All 27 screenshots uploaded as UI reference have been preserved in the `screenshots/` directory:
-- `screenshot_01`: Login Page with Quick Demo Login buttons and split layout
-- `screenshot_02`: Register Page with role cards (Hire Talent vs Find Work)
-- `screenshot_03` - `screenshot_05`: Landing Page (Hero, Stats, How it Works, Dark Navy Features)
-- `screenshot_06`, `screenshot_09`: Client Dashboard with overview metrics and project cards
-- `screenshot_07`, `screenshot_12`, `screenshot_16`: Browse Projects with sidebar filters & search
-- `screenshot_08`, `screenshot_13`, `screenshot_14`: Post a New Project with skill tags
-- `screenshot_10`: Messages Page & conversation states
-- `screenshot_11`: Edit Profile with skills chips, rates, and titles
-- `screenshot_15`: Freelancer Dashboard with proposal metrics
-- `screenshot_17` - `screenshot_21`: Admin Dashboard with platform analytics, user tables, and category manager
-- `screenshot_23`: Explore by Category and Latest Projects grid
-
----
 
 ## 🔑 Demo Login Credentials
 
