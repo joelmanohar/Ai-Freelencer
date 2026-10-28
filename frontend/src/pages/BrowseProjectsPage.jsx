@@ -17,7 +17,6 @@ export default function BrowseProjectsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedBudget, setSelectedBudget] = useState('Any Budget');
-  const [selectedCurrency, setSelectedCurrency] = useState('All');
   const [selectedExp, setSelectedExp] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
 
@@ -55,10 +54,7 @@ export default function BrowseProjectsPage() {
       return false;
     }
 
-    const currency = p.currency || 'USD';
-    if (selectedCurrency !== 'All' && currency !== selectedCurrency) return false;
-    // Compare budget ranges only within the selected currency.
-    if (selectedBudget !== 'Any Budget' && (selectedCurrency === 'All' || currency !== selectedCurrency)) return false;
+    // All stored and displayed project budgets are INR.
     if (selectedBudget === 'under' && p.budget >= 1000) return false;
     if (selectedBudget === '1000-3000' && (p.budget < 1000 || p.budget > 3000)) return false;
     if (selectedBudget === '3000-5000' && (p.budget < 3000 || p.budget > 5000)) return false;
@@ -72,8 +68,6 @@ export default function BrowseProjectsPage() {
     return true;
   }).sort((a, b) => {
     if (sortBy === 'budget_high' || sortBy === 'budget_low') {
-      const currencyOrder = (a.currency || 'USD').localeCompare(b.currency || 'USD');
-      if (currencyOrder !== 0) return currencyOrder;
       return sortBy === 'budget_high' ? (b.budget || 0) - (a.budget || 0) : (a.budget || 0) - (b.budget || 0);
     }
     return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
@@ -135,27 +129,17 @@ export default function BrowseProjectsPage() {
 
             {/* Budget Range */}
             <div className="form-group" style={{ marginBottom: '22px' }}>
-              <label className="form-label" style={{ fontWeight: 600, fontSize: '13px' }}>Currency</label>
-              <select className="form-control" value={selectedCurrency} onChange={(e) => { setSelectedCurrency(e.target.value); setSelectedBudget('Any Budget'); }}>
-                <option value="All">All currencies</option>
-                <option value="USD">USD ($)</option>
-                <option value="INR">INR (₹)</option>
-              </select>
-            </div>
-
-            <div className="form-group" style={{ marginBottom: '22px' }}>
               <label className="form-label" style={{ fontWeight: 600, fontSize: '13px' }}>Budget Range</label>
               <select
                 className="form-control"
                 value={selectedBudget}
                 onChange={(e) => setSelectedBudget(e.target.value)}
-                disabled={selectedCurrency === 'All'}
               >
                 <option value="Any Budget">Any Budget</option>
-                <option value="under">Under {selectedCurrency === 'INR' ? '₹' : '$'}1,000</option>
-                <option value="1000-3000">{selectedCurrency === 'INR' ? '₹' : '$'}1,000 - {selectedCurrency === 'INR' ? '₹' : '$'}3,000</option>
-                <option value="3000-5000">{selectedCurrency === 'INR' ? '₹' : '$'}3,000 - {selectedCurrency === 'INR' ? '₹' : '$'}5,000</option>
-                <option value="5000+">{selectedCurrency === 'INR' ? '₹' : '$'}5,000+</option>
+                <option value="under">Under ₹1,000</option>
+                <option value="1000-3000">₹1,000 - ₹3,000</option>
+                <option value="3000-5000">₹3,000 - ₹5,000</option>
+                <option value="5000+">₹5,000+</option>
               </select>
             </div>
 

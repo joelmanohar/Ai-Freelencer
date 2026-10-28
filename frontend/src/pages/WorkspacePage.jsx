@@ -6,7 +6,7 @@ import { formatCurrency } from '../utils/currency';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { 
-  Send, DollarSign, CheckCircle, Star, ArrowLeft, 
+  Send, CheckCircle, Star, ArrowLeft,
   MessageSquare, ShieldCheck, Clock 
 } from 'lucide-react';
 
@@ -122,7 +122,7 @@ export default function WorkspacePage() {
 
   // Payment Release — Razorpay Test Mode
   const handleReleasePayment = async () => {
-    if (!window.confirm(`Release payment of ${formatCurrency(project.budget, project.currency)} to ${project.hiredFreelancerName}?\n\nThis will open Razorpay checkout to complete the payment.`)) {
+    if (!window.confirm(`Release payment of ${formatCurrency(project.budget)} to ${project.hiredFreelancerName}?\n\nThis will open Razorpay checkout to complete the payment.`)) {
       return;
     }
 
@@ -142,7 +142,7 @@ export default function WorkspacePage() {
       const options = {
         key: keyId,
         amount: Math.round(amount * 100), // smallest currency unit
-        currency: currency || project.currency || 'USD',
+        currency: currency || 'INR',
         name: 'FreelanceHub',
         description: `Payment Release: ${project.title}`,
         order_id: orderId,
@@ -247,7 +247,7 @@ export default function WorkspacePage() {
                 style={{ backgroundColor: '#059669', borderColor: '#059669' }}
               >
                 <ShieldCheck size={16} />
-                <span>Release Payment ({formatCurrency(project.budget, project.currency)})</span>
+                <span>Release Payment ({formatCurrency(project.budget)})</span>
               </button>
             )}
 
@@ -331,7 +331,7 @@ export default function WorkspacePage() {
             <div>
               <div style={{ fontSize: '12px', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700 }}>Agreed Budget</div>
               <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)', marginTop: '2px' }}>
-                {formatCurrency(project.budget, project.currency)}
+                {formatCurrency(project.budget)}
               </div>
             </div>
 

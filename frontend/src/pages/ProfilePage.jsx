@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { userApi, reviewApi } from '../api/client';
-import { Star, MapPin, DollarSign, Calendar, Edit, Award } from 'lucide-react';
+import { Star, MapPin, IndianRupee, Calendar, Edit, Award } from 'lucide-react';
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -102,8 +102,8 @@ export default function ProfilePage() {
 
             {profile.hourlyRate && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: 'var(--slate-600)' }}>
-                <DollarSign size={16} />
-                <span><strong>${profile.hourlyRate}</strong> / hr</span>
+                <IndianRupee size={16} />
+                <span><strong>₹{Number(profile.hourlyRate).toLocaleString('en-IN')}</strong> / hr</span>
               </div>
             )}
 

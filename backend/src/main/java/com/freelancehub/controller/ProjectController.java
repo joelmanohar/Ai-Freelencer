@@ -130,9 +130,9 @@ public class ProjectController {
         }
 
         Project project = new Project();
-        String currency = req.getCurrency() == null ? "USD" : req.getCurrency().trim().toUpperCase();
-        if (!List.of("USD", "INR").contains(currency)) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Currency must be USD or INR"));
+        String currency = req.getCurrency() == null ? "INR" : req.getCurrency().trim().toUpperCase();
+        if (!"INR".equals(currency)) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Only INR currency is supported"));
         }
         project.setClientId(userDetails.getId());
         project.setClientName(client != null ? client.getDisplayName() : userDetails.getUsername());
@@ -170,8 +170,8 @@ public class ProjectController {
         if (req.getBudget() != null) p.setBudget(req.getBudget());
         if (req.getCurrency() != null) {
             String currency = req.getCurrency().trim().toUpperCase();
-            if (!List.of("USD", "INR").contains(currency)) {
-                return ResponseEntity.badRequest().body(Map.of("message", "Currency must be USD or INR"));
+            if (!"INR".equals(currency)) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Only INR currency is supported"));
             }
             p.setCurrency(currency);
         }

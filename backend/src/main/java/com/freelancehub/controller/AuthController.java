@@ -82,6 +82,7 @@ public class AuthController {
                 registerRequest.getDisplayName(),
                 role
         );
+        user.setHourlyRateCurrency("INR");
         User savedUser = userRepository.save(user);
 
         String jwt = jwtUtils.generateTokenFromEmail(savedUser.getEmail(), savedUser.getRole(), savedUser.getDisplayName(), savedUser.getId());

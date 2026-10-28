@@ -9,7 +9,6 @@ export default function PostProjectPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [budget, setBudget] = useState('');
-  const [currency, setCurrency] = useState('USD');
   const [deadline, setDeadline] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [experienceLevel, setExperienceLevel] = useState('Intermediate');
@@ -65,7 +64,7 @@ export default function PostProjectPage() {
         title,
         description,
         budget: parseFloat(budget),
-        currency,
+        currency: 'INR',
         deadline,
         categoryId,
         experienceLevel,
@@ -164,14 +163,6 @@ export default function PostProjectPage() {
                   onChange={(e) => setBudget(e.target.value)}
                   required
                 />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Currency</label>
-                <select className="form-control" value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                  <option value="USD">USD ($)</option>
-                  <option value="INR">INR (₹)</option>
-                </select>
               </div>
 
               <div className="form-group">

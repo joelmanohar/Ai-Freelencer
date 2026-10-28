@@ -76,7 +76,8 @@ public class DataSeederService {
             u.setTitle("Full Stack Developer");
             u.setBio("Experienced full-stack developer specializing in React, Node.js, and cloud architecture. 5+ years building production web apps.");
             u.setLocation("Remote");
-            u.setHourlyRate(65.0);
+            u.setHourlyRate(6194.37);
+            u.setHourlyRateCurrency("INR");
             u.setExperienceLevel("Expert");
             u.setSkills(Arrays.asList("React", "Node.js", "TypeScript", "PostgreSQL", "AWS", "Docker"));
             u.setRating(4.9);
@@ -105,7 +106,8 @@ public class DataSeederService {
             p1.setCategoryName(webCat != null ? webCat.getName() : "Web Development");
             p1.setTitle("Build a Modern E-commerce Website");
             p1.setDescription("I need a full-featured e-commerce website with product catalog, shopping cart, checkout, and admin dashboard. The site should be built with React and have a clean, modern design. Payment integration with Stripe is required.");
-            p1.setBudget(5000.0);
+            p1.setBudget(476490.0);
+            p1.setCurrency("INR");
             p1.setDeadline("Dec 31, 2026");
             p1.setExperienceLevel("Expert");
             p1.setSkills(Arrays.asList("React", "TypeScript", "Stripe", "PostgreSQL"));
@@ -119,7 +121,8 @@ public class DataSeederService {
             p2.setCategoryName(designCat != null ? designCat.getName() : "Design & Creative");
             p2.setTitle("Mobile App UI/UX Design");
             p2.setDescription("Looking for a designer to create beautiful UI/UX for a fitness tracking mobile app. Need wireframes, high-fidelity mockups, and a design system. ~15 screens.");
-            p2.setBudget(2500.0);
+            p2.setBudget(238245.0);
+            p2.setCurrency("INR");
             p2.setDeadline("Nov 15, 2026");
             p2.setExperienceLevel("Intermediate");
             p2.setSkills(Arrays.asList("Figma", "UI/UX", "Mobile Design"));
@@ -132,7 +135,8 @@ public class DataSeederService {
             proposal.setProjectTitle(savedP1.getTitle());
             proposal.setFreelancerId(freelancer.getId());
             proposal.setFreelancerName(freelancer.getDisplayName());
-            proposal.setBidAmount(4500.0);
+            proposal.setBidAmount(428841.0);
+            proposal.setCurrency("INR");
             proposal.setEstimatedDays(30);
             proposal.setCoverLetter("Hello! I am a full-stack developer with extensive experience building modern e-commerce web applications with React, TypeScript, and robust payment integrations. I have delivered similar projects and would love to build this for you.");
             proposal.setStatus("pending");

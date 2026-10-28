@@ -49,6 +49,7 @@ public class UserController {
         if (req.getBio() != null) user.setBio(req.getBio());
         if (req.getLocation() != null) user.setLocation(req.getLocation());
         if (req.getHourlyRate() != null) user.setHourlyRate(req.getHourlyRate());
+        user.setHourlyRateCurrency("INR");
         if (req.getExperienceLevel() != null) user.setExperienceLevel(req.getExperienceLevel());
         if (req.getSkills() != null) user.setSkills(req.getSkills());
 

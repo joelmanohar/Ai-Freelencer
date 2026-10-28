@@ -25,6 +25,7 @@ public class User {
     private String bio;
     private String location;
     private Double hourlyRate;
+    private String hourlyRateCurrency;
     private String experienceLevel; // "Beginner", "Intermediate", "Expert"
     private List<String> skills = new ArrayList<>();
     private Double rating = 5.0;
@@ -68,6 +69,9 @@ public class User {
 
     public Double getHourlyRate() { return hourlyRate; }
     public void setHourlyRate(Double hourlyRate) { this.hourlyRate = hourlyRate; }
+
+    public String getHourlyRateCurrency() { return hourlyRateCurrency == null ? "USD" : hourlyRateCurrency; }
+    public void setHourlyRateCurrency(String hourlyRateCurrency) { this.hourlyRateCurrency = hourlyRateCurrency; }
 
     public String getExperienceLevel() { return experienceLevel; }
     public void setExperienceLevel(String experienceLevel) { this.experienceLevel = experienceLevel; }

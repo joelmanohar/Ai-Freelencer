@@ -18,7 +18,7 @@ public class Payment {
     private String freelancerId;
     private String freelancerName;
     private Double amount;
-    private String currency = "USD";
+    private String currency;
     private String razorpayOrderId;
     private String razorpayPaymentId;
     private String status = "completed"; // pending, completed, failed
@@ -52,7 +52,7 @@ public class Payment {
     public Double getAmount() { return amount; }
     public void setAmount(Double amount) { this.amount = amount; }
 
-    public String getCurrency() { return currency; }
+    public String getCurrency() { return currency == null ? "INR" : currency; }
     public void setCurrency(String currency) { this.currency = currency; }
 
     public String getRazorpayOrderId() { return razorpayOrderId; }

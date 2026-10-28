@@ -6,7 +6,7 @@ import ProjectCard from '../components/ProjectCard';
 import EmptyState from '../components/EmptyState';
 import { formatCurrency, formatCurrencyTotals } from '../utils/currency';
 import { 
-  Briefcase, CheckCircle2, Clock, DollarSign, Plus, 
+  Briefcase, CheckCircle2, Clock, IndianRupee, Plus,
   Users, UserCheck, Layers, Trash2, ArrowRight, ShieldCheck, RefreshCw
 } from 'lucide-react';
 
@@ -92,7 +92,7 @@ function ClientDashboard({ user }) {
             </div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><DollarSign size={22} /></div>
+            <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><IndianRupee size={22} /></div>
             <div>
               <div className="stat-value">{totalSpent}</div>
               <div className="stat-label">Total Spent</div>
@@ -191,7 +191,7 @@ function FreelancerDashboard({ user }) {
             </div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><DollarSign size={22} /></div>
+            <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><IndianRupee size={22} /></div>
             <div>
               <div className="stat-value">{totalEarned}</div>
               <div className="stat-label">Total Earned</div>
@@ -219,7 +219,7 @@ function FreelancerDashboard({ user }) {
                       {prop.projectTitle}
                     </Link>
                     <div style={{ fontSize: '13.5px', color: 'var(--slate-500)', marginTop: '4px' }}>
-                      Your bid: <strong style={{ color: 'var(--primary)' }}>{formatCurrency(prop.bidAmount, prop.currency)}</strong> • {prop.estimatedDays} days delivery
+                      Your bid: <strong style={{ color: 'var(--primary)' }}>{formatCurrency(prop.bidAmount)}</strong> • {prop.estimatedDays} days delivery
                     </div>
                   </div>
 
@@ -252,7 +252,7 @@ function AdminDashboard({ user }) {
     clients: 0,
     freelancers: 0,
     totalProjects: 0,
-    revenueByCurrency: {},
+    totalRevenue: 0,
     categories: 0
   });
 
@@ -377,11 +377,9 @@ function AdminDashboard({ user }) {
             </div>
           </div>
           <div className="stat-card" style={{ padding: '18px' }}>
-            <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><DollarSign size={20} /></div>
+            <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><IndianRupee size={20} /></div>
             <div>
-              <div className="stat-value" style={{ fontSize: '18px' }}>
-                {Object.entries(stats.revenueByCurrency || {}).map(([currency, amount]) => formatCurrency(amount, currency)).join(' / ') || formatCurrency(0, 'USD')}
-              </div>
+              <div className="stat-value" style={{ fontSize: '22px' }}>{formatCurrency(stats.totalRevenue || 0)}</div>
               <div className="stat-label">Total Revenue</div>
             </div>
           </div>
@@ -450,7 +448,7 @@ function AdminDashboard({ user }) {
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontWeight: 700, color: '#16a34a' }}>{formatCurrency(pay.amount, pay.currency)}</div>
+                      <div style={{ fontWeight: 700, color: '#16a34a' }}>{formatCurrency(pay.amount)}</div>
                       <span className="badge badge-completed" style={{ fontSize: '11px' }}>paid</span>
                     </div>
                   </div>

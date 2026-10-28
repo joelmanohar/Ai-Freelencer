@@ -54,7 +54,7 @@ public class RazorpayService {
                 .orElseThrow(() -> new RuntimeException("Project not found: " + projectId));
         Double amount = project.getBudget();
         if (amount == null || amount <= 0) throw new IllegalArgumentException("Project amount must be positive");
-        String currency = normalizeCurrency(project.getCurrency());
+        String currency = "INR";
         try {
             RazorpayClient client = new RazorpayClient(keyId, keySecret);
 
@@ -128,7 +128,7 @@ public class RazorpayService {
         payment.setFreelancerId(project.getHiredFreelancerId());
         payment.setFreelancerName(freelancer != null ? freelancer.getDisplayName() : "Freelancer");
         payment.setAmount(project.getBudget());
-        payment.setCurrency(normalizeCurrency(project.getCurrency()));
+        payment.setCurrency("INR");
         payment.setRazorpayOrderId(razorpayOrderId);
         payment.setRazorpayPaymentId(razorpayPaymentId);
         payment.setStatus("completed");
@@ -140,14 +140,6 @@ public class RazorpayService {
 
         logger.info("Payment completed: {} for project: {}", razorpayPaymentId, projectId);
         return saved;
-    }
-
-    private String normalizeCurrency(String currency) {
-        String normalized = currency == null ? "USD" : currency.trim().toUpperCase();
-        if (!"USD".equals(normalized) && !"INR".equals(normalized)) {
-            throw new IllegalArgumentException("Project currency must be USD or INR");
-        }
-        return normalized;
     }
 
     /**

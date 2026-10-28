@@ -155,7 +155,7 @@ export default function EditProfilePage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Hourly Rate (USD)</label>
+                <label className="form-label">Hourly Rate (INR)</label>
                 <input
                   type="number"
                   className="form-control"
