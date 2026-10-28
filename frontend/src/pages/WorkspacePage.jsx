@@ -13,7 +13,7 @@ import {
 export default function WorkspacePage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, token } = useAuthStore();
 
   const [project, setProject] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -132,7 +132,7 @@ export default function WorkspacePage() {
     }
 
     try {
-      const orderRes = await paymentApi.createOrder(projectId, project.budget);
+      const orderRes = await paymentApi.createOrder(projectId, project.budget, token);
       const { orderId, amount, currency, keyId } = orderRes.data;
 
       if (!keyId || !orderId) {

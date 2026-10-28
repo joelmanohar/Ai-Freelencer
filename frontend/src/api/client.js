@@ -68,7 +68,9 @@ export const messageApi = {
 };
 
 export const paymentApi = {
-  createOrder: (projectId, amount) => api.post('/payments/create-order', { projectId, amount }),
+  createOrder: (projectId, amount, token) => api.post('/payments/create-order', { projectId, amount }, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {}
+  }),
   verify: (data) => api.post('/payments/verify', data),
   getMy: () => api.get('/payments/my'),
   getAll: () => api.get('/payments/all')
