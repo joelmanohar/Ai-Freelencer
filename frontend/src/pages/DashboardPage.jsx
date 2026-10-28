@@ -4,6 +4,7 @@ import { useAuthStore } from '../store/authStore';
 import { projectApi, proposalApi, paymentApi, categoryApi, userApi, adminApi } from '../api/client';
 import ProjectCard from '../components/ProjectCard';
 import EmptyState from '../components/EmptyState';
+import { formatCurrency, formatCurrencyTotals } from '../utils/currency';
 import { 
   Briefcase, CheckCircle2, Clock, DollarSign, Plus, 
   Users, UserCheck, Layers, Trash2, ArrowRight, ShieldCheck, RefreshCw
@@ -45,7 +46,7 @@ function ClientDashboard({ user }) {
   const totalProjects = projects.length;
   const activeProjects = projects.filter(p => p.status === 'in_progress').length;
   const openProjects = projects.filter(p => p.status === 'open').length;
-  const totalSpent = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
+  const totalSpent = formatCurrencyTotals(payments);
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: 'calc(100vh - 68px)', padding: '40px 0 80px 0' }}>
@@ -93,7 +94,7 @@ function ClientDashboard({ user }) {
           <div className="stat-card">
             <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><DollarSign size={22} /></div>
             <div>
-              <div className="stat-value">${totalSpent.toLocaleString()}</div>
+              <div className="stat-value">{totalSpent}</div>
               <div className="stat-label">Total Spent</div>
             </div>
           </div>
@@ -151,7 +152,7 @@ function FreelancerDashboard({ user }) {
   const totalProposals = proposals.length;
   const acceptedProposals = proposals.filter(p => p.status === 'accepted').length;
   const pendingProposals = proposals.filter(p => p.status === 'pending').length;
-  const totalEarned = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
+  const totalEarned = formatCurrencyTotals(payments);
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: 'calc(100vh - 68px)', padding: '40px 0 80px 0' }}>
@@ -192,7 +193,7 @@ function FreelancerDashboard({ user }) {
           <div className="stat-card">
             <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><DollarSign size={22} /></div>
             <div>
-              <div className="stat-value">${totalEarned.toLocaleString()}</div>
+              <div className="stat-value">{totalEarned}</div>
               <div className="stat-label">Total Earned</div>
             </div>
           </div>
@@ -218,7 +219,7 @@ function FreelancerDashboard({ user }) {
                       {prop.projectTitle}
                     </Link>
                     <div style={{ fontSize: '13.5px', color: 'var(--slate-500)', marginTop: '4px' }}>
-                      Your bid: <strong style={{ color: 'var(--primary)' }}>${prop.bidAmount}</strong> • {prop.estimatedDays} days delivery
+                      Your bid: <strong style={{ color: 'var(--primary)' }}>{formatCurrency(prop.bidAmount, prop.currency)}</strong> • {prop.estimatedDays} days delivery
                     </div>
                   </div>
 
@@ -251,7 +252,7 @@ function AdminDashboard({ user }) {
     clients: 0,
     freelancers: 0,
     totalProjects: 0,
-    totalRevenue: 0,
+    revenueByCurrency: {},
     categories: 0
   });
 
@@ -378,7 +379,9 @@ function AdminDashboard({ user }) {
           <div className="stat-card" style={{ padding: '18px' }}>
             <div className="stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><DollarSign size={20} /></div>
             <div>
-              <div className="stat-value" style={{ fontSize: '22px' }}>${stats.totalRevenue || 0}</div>
+              <div className="stat-value" style={{ fontSize: '18px' }}>
+                {Object.entries(stats.revenueByCurrency || {}).map(([currency, amount]) => formatCurrency(amount, currency)).join(' / ') || formatCurrency(0, 'USD')}
+              </div>
               <div className="stat-label">Total Revenue</div>
             </div>
           </div>
@@ -447,7 +450,7 @@ function AdminDashboard({ user }) {
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontWeight: 700, color: '#16a34a' }}>${(pay.amount || 0).toLocaleString()}</div>
+                      <div style={{ fontWeight: 700, color: '#16a34a' }}>{formatCurrency(pay.amount, pay.currency)}</div>
                       <span className="badge badge-completed" style={{ fontSize: '11px' }}>paid</span>
                     </div>
                   </div>

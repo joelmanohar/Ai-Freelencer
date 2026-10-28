@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { projectApi, messageApi, paymentApi, reviewApi } from '../api/client';
 import { useAuthStore } from '../store/authStore';
+import { formatCurrency } from '../utils/currency';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { 
@@ -121,7 +122,7 @@ export default function WorkspacePage() {
 
   // Payment Release — Razorpay Test Mode
   const handleReleasePayment = async () => {
-    if (!window.confirm(`Release payment of ₹${project.budget} to ${project.hiredFreelancerName}?\n\nThis will open Razorpay test checkout to complete the payment.`)) {
+    if (!window.confirm(`Release payment of ${formatCurrency(project.budget, project.currency)} to ${project.hiredFreelancerName}?\n\nThis will open Razorpay checkout to complete the payment.`)) {
       return;
     }
 
@@ -140,8 +141,8 @@ export default function WorkspacePage() {
 
       const options = {
         key: keyId,
-        amount: Math.round(amount * 100), // paise
-        currency: currency || 'INR',
+        amount: Math.round(amount * 100), // smallest currency unit
+        currency: currency || project.currency || 'USD',
         name: 'FreelanceHub',
         description: `Payment Release: ${project.title}`,
         order_id: orderId,
@@ -246,7 +247,7 @@ export default function WorkspacePage() {
                 style={{ backgroundColor: '#059669', borderColor: '#059669' }}
               >
                 <ShieldCheck size={16} />
-                <span>Release Payment (₹{project.budget})</span>
+                <span>Release Payment ({formatCurrency(project.budget, project.currency)})</span>
               </button>
             )}
 
@@ -330,7 +331,7 @@ export default function WorkspacePage() {
             <div>
               <div style={{ fontSize: '12px', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700 }}>Agreed Budget</div>
               <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)', marginTop: '2px' }}>
-                ${project.budget ? Number(project.budget).toLocaleString() : '0'}
+                {formatCurrency(project.budget, project.currency)}
               </div>
             </div>
 

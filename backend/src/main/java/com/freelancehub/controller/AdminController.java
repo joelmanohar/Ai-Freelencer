@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -44,16 +45,18 @@ public class AdminController {
         long totalProjects = projectRepository.count();
         long categories = categoryRepository.count();
 
-        double totalRevenue = paymentRepository.findAll().stream()
+        Map<String, Double> revenueByCurrency = paymentRepository.findAll().stream()
                 .filter(p -> "completed".equalsIgnoreCase(p.getStatus()) && p.getAmount() != null)
-                .mapToDouble(p -> p.getAmount() * 0.10) // 10% platform fee
-                .sum();
+                .collect(Collectors.groupingBy(
+                        p -> p.getCurrency() == null ? "USD" : p.getCurrency().toUpperCase(),
+                        Collectors.summingDouble(p -> p.getAmount() * 0.10)));
+        revenueByCurrency.replaceAll((currency, amount) -> Math.round(amount * 100.0) / 100.0);
 
         stats.put("totalUsers", totalUsers);
         stats.put("clients", clients);
         stats.put("freelancers", freelancers);
         stats.put("totalProjects", totalProjects);
-        stats.put("totalRevenue", Math.round(totalRevenue * 100.0) / 100.0);
+        stats.put("revenueByCurrency", revenueByCurrency);
         stats.put("categories", categories);
 
         return ResponseEntity.ok(stats);

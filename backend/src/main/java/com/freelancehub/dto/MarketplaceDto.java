@@ -8,6 +8,7 @@ public class MarketplaceDto {
         private String title;
         private String description;
         private Double budget;
+        private String currency;
         private String deadline;
         private String categoryId;
         private String experienceLevel;
@@ -21,6 +22,8 @@ public class MarketplaceDto {
         public void setDescription(String description) { this.description = description; }
         public Double getBudget() { return budget; }
         public void setBudget(Double budget) { this.budget = budget; }
+        public String getCurrency() { return currency; }
+        public void setCurrency(String currency) { this.currency = currency; }
         public String getDeadline() { return deadline; }
         public void setDeadline(String deadline) { this.deadline = deadline; }
         public String getCategoryId() { return categoryId; }

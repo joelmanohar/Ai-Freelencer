@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, DollarSign } from 'lucide-react';
+import { formatCurrency } from '../utils/currency';
 
 export default function ProjectCard({ project }) {
   const formatTimeAgo = (dateStr) => {
@@ -77,7 +78,7 @@ export default function ProjectCard({ project }) {
         }}>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)', marginBottom: '4px' }}>
-              ${project.budget ? Number(project.budget).toLocaleString() : '0'}
+              {formatCurrency(project.budget, project.currency)}
             </div>
             {project.deadline && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '13px', color: 'var(--slate-500)', justifyContent: 'flex-end' }}>

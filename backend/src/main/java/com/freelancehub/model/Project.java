@@ -20,6 +20,7 @@ public class Project {
     private String title;
     private String description;
     private Double budget;
+    private String currency = "USD";
     private String deadline;
     private List<String> skills = new ArrayList<>();
     private String experienceLevel; // Beginner, Intermediate, Expert
@@ -55,6 +56,9 @@ public class Project {
 
     public Double getBudget() { return budget; }
     public void setBudget(Double budget) { this.budget = budget; }
+
+    public String getCurrency() { return currency == null ? "USD" : currency; }
+    public void setCurrency(String currency) { this.currency = currency; }
 
     public String getDeadline() { return deadline; }
     public void setDeadline(String deadline) { this.deadline = deadline; }

@@ -17,6 +17,7 @@ public class Proposal {
     private String freelancerName;
     private String coverLetter;
     private Double bidAmount;
+    private String currency = "USD";
     private Integer estimatedDays;
     private String status = "pending"; // pending, accepted, rejected
 
@@ -45,6 +46,8 @@ public class Proposal {
 
     public Double getBidAmount() { return bidAmount; }
     public void setBidAmount(Double bidAmount) { this.bidAmount = bidAmount; }
+    public String getCurrency() { return currency == null ? "USD" : currency; }
+    public void setCurrency(String currency) { this.currency = currency; }
 
     public Integer getEstimatedDays() { return estimatedDays; }
     public void setEstimatedDays(Integer estimatedDays) { this.estimatedDays = estimatedDays; }

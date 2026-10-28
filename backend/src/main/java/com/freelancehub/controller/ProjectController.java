@@ -130,6 +130,10 @@ public class ProjectController {
         }
 
         Project project = new Project();
+        String currency = req.getCurrency() == null ? "USD" : req.getCurrency().trim().toUpperCase();
+        if (!List.of("USD", "INR").contains(currency)) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Currency must be USD or INR"));
+        }
         project.setClientId(userDetails.getId());
         project.setClientName(client != null ? client.getDisplayName() : userDetails.getUsername());
         project.setCategoryId(req.getCategoryId());
@@ -137,6 +141,7 @@ public class ProjectController {
         project.setTitle(req.getTitle());
         project.setDescription(req.getDescription());
         project.setBudget(req.getBudget());
+        project.setCurrency(currency);
         project.setDeadline(req.getDeadline());
         project.setExperienceLevel(req.getExperienceLevel() != null ? req.getExperienceLevel() : "Intermediate");
         project.setSkills(req.getSkills());
@@ -163,6 +168,13 @@ public class ProjectController {
         if (req.getTitle() != null) p.setTitle(req.getTitle());
         if (req.getDescription() != null) p.setDescription(req.getDescription());
         if (req.getBudget() != null) p.setBudget(req.getBudget());
+        if (req.getCurrency() != null) {
+            String currency = req.getCurrency().trim().toUpperCase();
+            if (!List.of("USD", "INR").contains(currency)) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Currency must be USD or INR"));
+            }
+            p.setCurrency(currency);
+        }
         if (req.getDeadline() != null) p.setDeadline(req.getDeadline());
         if (req.getExperienceLevel() != null) p.setExperienceLevel(req.getExperienceLevel());
         if (req.getSkills() != null) p.setSkills(req.getSkills());

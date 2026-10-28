@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { projectApi, proposalApi, reviewApi } from '../api/client';
 import { useAuthStore } from '../store/authStore';
+import { formatCurrency } from '../utils/currency';
 import { 
   ArrowLeft, Clock, DollarSign, Calendar, CheckCircle2, 
   MessageSquare, User, AlertCircle, Send, Star 
@@ -241,7 +242,7 @@ export default function ProjectDetailPage() {
                               {prop.freelancerName}
                             </div>
                             <div style={{ fontSize: '13px', color: 'var(--slate-500)' }}>
-                              Bid: <strong style={{ color: 'var(--primary)' }}>${prop.bidAmount}</strong> • Est: {prop.estimatedDays} days
+                              Bid: <strong style={{ color: 'var(--primary)' }}>{formatCurrency(prop.bidAmount, prop.currency || project.currency)}</strong> • Est: {prop.estimatedDays} days
                             </div>
                           </div>
                           <span className={`badge badge-${prop.status}`} style={{ textTransform: 'capitalize' }}>
@@ -300,7 +301,7 @@ export default function ProjectDetailPage() {
                   <div style={{ padding: '18px', backgroundColor: 'var(--slate-50)', borderRadius: 'var(--radius-md)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                       <div style={{ fontSize: '14px', color: 'var(--slate-700)' }}>
-                        Your Bid: <strong style={{ color: 'var(--primary)' }}>${myProposal.bidAmount}</strong> • Est: {myProposal.estimatedDays} days
+                        Your Bid: <strong style={{ color: 'var(--primary)' }}>{formatCurrency(myProposal.bidAmount, myProposal.currency || project.currency)}</strong> • Est: {myProposal.estimatedDays} days
                       </div>
                       <span className={`badge badge-${myProposal.status}`} style={{ textTransform: 'capitalize' }}>
                         {myProposal.status}
@@ -326,7 +327,7 @@ export default function ProjectDetailPage() {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                       <div className="form-group">
-                        <label className="form-label">Your Bid Amount (USD)</label>
+                        <label className="form-label">Your Bid Amount ({project.currency || 'USD'})</label>
                         <input
                           type="number"
                           className="form-control"
@@ -380,7 +381,7 @@ export default function ProjectDetailPage() {
                   Budget
                 </div>
                 <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--primary)' }}>
-                  ${project.budget ? Number(project.budget).toLocaleString() : '0'}
+                  {formatCurrency(project.budget, project.currency)}
                 </div>
               </div>
 

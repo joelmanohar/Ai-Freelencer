@@ -30,9 +30,6 @@ public class RazorpayService {
     @Value("${app.razorpay.key-secret}")
     private String keySecret;
 
-    @Value("${app.razorpay.currency:INR}")
-    private String currency;
-
     @Value("${app.razorpay.webhook-secret}")
     private String webhookSecret;
 
@@ -50,18 +47,19 @@ public class RazorpayService {
 
     /**
      * Creates a real Razorpay order via the Razorpay Java SDK.
-     * Amount is in paise (INR × 100).
+     * Amount is stored as a major currency unit and sent to Razorpay in the smallest unit.
      */
     public RazorpayOrderResponse createOrder(String projectId, Double ignoredClientAmount) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found: " + projectId));
         Double amount = project.getBudget();
         if (amount == null || amount <= 0) throw new IllegalArgumentException("Project amount must be positive");
+        String currency = normalizeCurrency(project.getCurrency());
         try {
             RazorpayClient client = new RazorpayClient(keyId, keySecret);
 
             JSONObject options = new JSONObject();
-            // Razorpay requires amount in smallest currency unit (paise for INR)
+            // Razorpay requires the amount in the currency's smallest unit.
             options.put("amount", (long) (amount * 100));
             options.put("currency", currency);
             options.put("receipt", "receipt_" + projectId);
@@ -130,7 +128,7 @@ public class RazorpayService {
         payment.setFreelancerId(project.getHiredFreelancerId());
         payment.setFreelancerName(freelancer != null ? freelancer.getDisplayName() : "Freelancer");
         payment.setAmount(project.getBudget());
-        payment.setCurrency(currency);
+        payment.setCurrency(normalizeCurrency(project.getCurrency()));
         payment.setRazorpayOrderId(razorpayOrderId);
         payment.setRazorpayPaymentId(razorpayPaymentId);
         payment.setStatus("completed");
@@ -142,6 +140,14 @@ public class RazorpayService {
 
         logger.info("Payment completed: {} for project: {}", razorpayPaymentId, projectId);
         return saved;
+    }
+
+    private String normalizeCurrency(String currency) {
+        String normalized = currency == null ? "USD" : currency.trim().toUpperCase();
+        if (!"USD".equals(normalized) && !"INR".equals(normalized)) {
+            throw new IllegalArgumentException("Project currency must be USD or INR");
+        }
+        return normalized;
     }
 
     /**

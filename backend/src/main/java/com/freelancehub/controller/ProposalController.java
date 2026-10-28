@@ -66,6 +66,7 @@ public class ProposalController {
         p.setFreelancerName(freelancer != null ? freelancer.getDisplayName() : userDetails.getUsername());
         p.setCoverLetter(req.getCoverLetter());
         p.setBidAmount(req.getBidAmount());
+        p.setCurrency(project.getCurrency());
         p.setEstimatedDays(req.getEstimatedDays());
         p.setStatus("pending");
 
