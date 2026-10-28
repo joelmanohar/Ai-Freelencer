@@ -33,6 +33,12 @@ public class AdminController {
         this.paymentRepository = paymentRepository;
     }
 
+    private boolean isSuccessfulPayment(String status) {
+        return status == null || status.isBlank()
+                || "completed".equalsIgnoreCase(status)
+                || "paid".equalsIgnoreCase(status);
+    }
+
     @GetMapping("/stats")
     @Operation(summary = "Get overall platform metrics for Admin dashboard")
     public ResponseEntity<Map<String, Object>> getAdminStats() {
@@ -45,7 +51,7 @@ public class AdminController {
         long categories = categoryRepository.count();
 
         double totalRevenue = paymentRepository.findAll().stream()
-                .filter(p -> "completed".equalsIgnoreCase(p.getStatus()) && p.getAmount() != null)
+                .filter(p -> p.getAmount() != null && isSuccessfulPayment(p.getStatus()))
                 .mapToDouble(p -> p.getAmount() * 0.10) // 10% platform fee, all amounts are INR
                 .sum();
 
