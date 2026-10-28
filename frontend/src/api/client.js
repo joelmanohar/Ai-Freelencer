@@ -22,7 +22,9 @@ api.interceptors.response.use(
   err => {
     if (err.response && err.response.status === 401) {
       const path = window.location.pathname;
-      if (!path.includes('/login') && !path.includes('/register')) {
+      const requestUrl = err.config?.url || '';
+      const isPaymentRequest = requestUrl.includes('/payments/');
+      if (!isPaymentRequest && !path.includes('/login') && !path.includes('/register')) {
         localStorage.removeItem('fh_token');
         localStorage.removeItem('fh_user');
         window.location.replace('/login?session=expired');
