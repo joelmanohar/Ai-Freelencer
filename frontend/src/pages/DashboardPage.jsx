@@ -6,7 +6,7 @@ import ProjectCard from '../components/ProjectCard';
 import EmptyState from '../components/EmptyState';
 import { formatCurrency, formatCurrencyTotals } from '../utils/currency';
 import { 
-  Briefcase, CheckCircle2, Clock, IndianRupee, Plus,
+  Briefcase, CheckCircle2, Clock, IndianRupee, Plus, CreditCard,
   Users, UserCheck, Layers, Trash2, ArrowRight, ShieldCheck, RefreshCw
 } from 'lucide-react';
 
@@ -338,6 +338,9 @@ function AdminDashboard({ user }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Link to="/admin/users" className="btn btn-secondary">
               <Users size={16} /> User Directory
+            </Link>
+            <Link to="/admin/payments" className="btn btn-secondary">
+              <CreditCard size={16} /> Payments
             </Link>
             <button className="btn btn-secondary" onClick={loadAdminData} disabled={isRefreshing}>
               <RefreshCw size={16} className={isRefreshing ? 'spin' : ''} />

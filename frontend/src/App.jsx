@@ -18,6 +18,7 @@ import MessagesPage from './pages/MessagesPage';
 import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import AdminUsersPage from './pages/AdminUsersPage';
+import AdminPaymentsPage from './pages/AdminPaymentsPage';
 
 // Protected Route Guard
 function ProtectedRoute({ children, allowedRoles }) {
@@ -82,6 +83,15 @@ function AppContent() {
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <AdminUsersPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/payments"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <AdminPaymentsPage />
               </ProtectedRoute>
             }
           />

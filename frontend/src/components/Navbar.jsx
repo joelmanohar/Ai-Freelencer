@@ -145,6 +145,9 @@ export default function Navbar() {
               <Link to="/admin/users" className={`nav-link ${location.pathname.startsWith('/admin/users') ? 'active' : ''}`}>
                 Users
               </Link>
+              <Link to="/admin/payments" className={`nav-link ${location.pathname.startsWith('/admin/payments') ? 'active' : ''}`}>
+                Payments
+              </Link>
             </>
           )}
 
