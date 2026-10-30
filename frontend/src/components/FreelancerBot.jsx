@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Send, Sparkles, X } from 'lucide-react';
+import { ArrowUp, Bot, X } from 'lucide-react';
 import { aiChatApi } from '../api/client';
 
 const welcomeMessage = {
   role: 'assistant',
-  content: "Hi! I'm your FreelanceHub guide. Ask me about finding projects, proposals, hiring, profiles, or payments."
+  content: "Hi! I’m your FreelanceHub AI assistant. I can help with projects, proposals, hiring, profiles, payments, and getting started. What would you like to work on?"
 };
 
 const quickQuestions = [
@@ -49,10 +49,10 @@ export default function FreelancerBot() {
         <section className="freelancer-bot__panel" aria-label="Freelancer help chat">
           <header className="freelancer-bot__header">
             <div className="freelancer-bot__identity">
-              <span className="freelancer-bot__avatar"><img src="/freelancer-bot.png" alt="" /></span>
+              <span className="freelancer-bot__avatar" aria-hidden="true"><Bot size={21} strokeWidth={1.8} /></span>
               <span>
-                <strong>FreelanceHub Guide</strong>
-                <small><i /> Here to help with freelancing</small>
+                <strong>FreelanceHub AI</strong>
+                <small><i /> Online · Freelancer support</small>
               </span>
             </div>
             <button className="freelancer-bot__close" type="button" onClick={() => setOpen(false)} aria-label="Close chat">
@@ -79,19 +79,26 @@ export default function FreelancerBot() {
 
           <form className="freelancer-bot__form" onSubmit={event => { event.preventDefault(); sendMessage(); }}>
             <label className="sr-only" htmlFor="freelancer-bot-input">Ask a freelancer question</label>
-            <input
+            <textarea
               id="freelancer-bot-input"
               value={draft}
               onChange={event => setDraft(event.target.value.slice(0, 1000))}
-              placeholder="Ask about freelancing..."
+              placeholder="Ask anything about freelancing..."
               maxLength={1000}
               disabled={busy}
+              rows={1}
+              onKeyDown={event => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                  event.preventDefault();
+                  sendMessage();
+                }
+              }}
             />
             <button type="submit" aria-label="Send message" disabled={busy || !draft.trim()}>
-              <Send size={17} />
+              <ArrowUp size={18} />
             </button>
           </form>
-          <p className="freelancer-bot__privacy">Replies use OpenRouter’s NVIDIA free model. Avoid sharing passwords, payment details, or private information.</p>
+          <p className="freelancer-bot__privacy">AI responses may be inaccurate. Don’t share passwords or payment details.</p>
         </section>
       )}
 
@@ -99,13 +106,10 @@ export default function FreelancerBot() {
         className="freelancer-bot__launcher"
         type="button"
         onClick={() => setOpen(value => !value)}
-        aria-label={open ? 'Close FreelanceHub chat' : 'Open FreelanceHub chat'}
+        aria-label={open ? 'Close FreelanceHub AI' : 'Open FreelanceHub AI'}
         aria-expanded={open}
       >
-        {open ? <X size={23} /> : <>
-          <img src="/freelancer-bot.png" alt="" />
-          <span className="freelancer-bot__sparkle"><Sparkles size={13} /></span>
-        </>}
+        {open ? <X size={22} /> : <span className="freelancer-bot__orb" aria-hidden="true"><Bot size={27} strokeWidth={1.8} /></span>}
       </button>
     </div>
   );
