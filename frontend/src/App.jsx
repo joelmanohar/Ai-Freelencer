@@ -19,6 +19,7 @@ import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminPaymentsPage from './pages/AdminPaymentsPage';
+import AdminRecordsPage from './pages/AdminRecordsPage';
 
 // Protected Route Guard
 function ProtectedRoute({ children, allowedRoles }) {
@@ -92,6 +93,15 @@ function AppContent() {
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <AdminPaymentsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/records"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <AdminRecordsPage />
               </ProtectedRoute>
             }
           />

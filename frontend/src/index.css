@@ -1318,6 +1318,16 @@ body { background: #fff; }
 .admin-users-page__pagination > div { display:flex; align-items:center; gap:12px; }
 .admin-users-page__pagination .btn { min-height:34px; padding:0 11px; font-size:12px; }
 .admin-payments-page__amount { color:#16803c!important; font-weight:750; }
+.admin-records-page__filters { display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap; padding:20px; border-bottom:1px solid var(--slate-100); }
+.admin-records-page__filters label { display:flex; flex-direction:column; gap:7px; min-width:210px; color:var(--slate-600); font-size:12px; font-weight:650; }
+.admin-records-page__filters select, .admin-records-page__filters input { height:42px; padding:0 12px; color:var(--slate-800); background:white; border:1px solid var(--slate-200); border-radius:10px; font:inherit; }
+.admin-records-page__filters .btn { height:42px; }
+.admin-records-page__results { border-top:1px solid var(--slate-100); }
+.admin-records-page__result-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px; }
+.admin-records-page__result-heading h2 { margin:0; color:var(--slate-900); font-size:17px; }
+.admin-records-page__result-heading span { color:var(--slate-500); font-size:12px; }
+.admin-records-page__user-link { color:var(--primary); font-weight:650; text-decoration:none; }
+.admin-records-page__user-link:hover { text-decoration:underline; }
 @media (max-width:700px) {
   .admin-users-page { padding:28px 0 60px; }
   .admin-users-page__heading { align-items:flex-start; }
@@ -1328,4 +1338,6 @@ body { background: #fff; }
   .admin-users-page__result-count { margin-left:auto; }
   .admin-users-page__pagination { align-items:flex-start; flex-direction:column; }
   .admin-users-page__pagination > div { width:100%; justify-content:space-between; }
+  .admin-records-page__filters { align-items:stretch; flex-direction:column; }
+  .admin-records-page__filters label { min-width:0; }
 }
