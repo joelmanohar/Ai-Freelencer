@@ -17,6 +17,7 @@ import WorkspacePage from './pages/WorkspacePage';
 import MessagesPage from './pages/MessagesPage';
 import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
+import AdminUsersPage from './pages/AdminUsersPage';
 
 // Protected Route Guard
 function ProtectedRoute({ children, allowedRoles }) {
@@ -72,6 +73,15 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <AdminUsersPage />
               </ProtectedRoute>
             }
           />

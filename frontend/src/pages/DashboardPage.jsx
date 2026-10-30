@@ -335,10 +335,15 @@ function AdminDashboard({ user }) {
               Monitor and manage the platform
             </p>
           </div>
-          <button className="btn btn-secondary" onClick={loadAdminData} disabled={isRefreshing}>
-            <RefreshCw size={16} className={isRefreshing ? 'spin' : ''} />
-            {isRefreshing ? 'Refreshing…' : 'Refresh'}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Link to="/admin/users" className="btn btn-secondary">
+              <Users size={16} /> User Directory
+            </Link>
+            <button className="btn btn-secondary" onClick={loadAdminData} disabled={isRefreshing}>
+              <RefreshCw size={16} className={isRefreshing ? 'spin' : ''} />
+              {isRefreshing ? 'Refreshing…' : 'Refresh'}
+            </button>
+          </div>
         </div>
 
         {/* 6 Stat Cards matching screenshot 17 */}
