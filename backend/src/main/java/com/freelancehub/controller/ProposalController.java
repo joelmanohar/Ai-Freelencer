@@ -26,13 +26,19 @@ public class ProposalController {
     private final ProposalRepository proposalRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final com.freelancehub.service.EmailService emailService;
+    private final com.freelancehub.service.NotificationService notificationService;
 
     public ProposalController(ProposalRepository proposalRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository) {
+                              UserRepository userRepository,
+                              com.freelancehub.service.EmailService emailService,
+                              com.freelancehub.service.NotificationService notificationService) {
         this.proposalRepository = proposalRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/project/{projectId}")
@@ -140,6 +146,57 @@ public class ProposalController {
         project.setHiredFreelancerId(proposal.getFreelancerId());
         project.setHiredFreelancerName(proposal.getFreelancerName());
         projectRepository.save(project);
+
+        // Send In-App & Email Notifications for Proposal Accepted
+        try {
+            com.freelancehub.model.User freelancer = userRepository.findById(proposal.getFreelancerId()).orElse(null);
+            com.freelancehub.model.User client = userRepository.findById(project.getClientId()).orElse(null);
+
+            // In-app notifications
+            notificationService.createNotification(
+                    proposal.getFreelancerId(),
+                    "Proposal Accepted! 🚀",
+                    "Congratulations! Your proposal for '" + project.getTitle() + "' was accepted by " + project.getClientName() + ".",
+                    "PROPOSAL_ACCEPTED",
+                    "/workspace/" + project.getId()
+            );
+
+            notificationService.createNotification(
+                    project.getClientId(),
+                    "Freelancer Hired",
+                    "You accepted " + proposal.getFreelancerName() + "'s proposal for '" + project.getTitle() + "'.",
+                    "PROPOSAL_ACCEPTED",
+                    "/workspace/" + project.getId()
+            );
+
+            // Email notifications
+            emailService.sendProposalAcceptedEmailToFreelancer(
+                    freelancer != null ? freelancer.getEmail() : null,
+                    proposal.getFreelancerName(),
+                    project.getClientName(),
+                    project.getTitle(),
+                    proposal.getBidAmount()
+            );
+
+            emailService.sendProposalAcceptedEmailToClient(
+                    client != null ? client.getEmail() : null,
+                    project.getClientName(),
+                    proposal.getFreelancerName(),
+                    project.getTitle(),
+                    proposal.getBidAmount()
+            );
+
+            // Notify the configured admin address
+            emailService.sendAdminProposalAcceptedNotification(
+                    project.getTitle(),
+                    project.getClientName(),
+                    proposal.getFreelancerName(),
+                    proposal.getBidAmount()
+            );
+        } catch (Exception e) {
+            // Log but don't fail the proposal acceptance
+            System.err.println("Error dispatching proposal accepted notifications: " + e.getMessage());
+        }
 
         return ResponseEntity.ok(proposal);
     }

@@ -36,13 +36,19 @@ public class RazorpayService {
     private final ProjectRepository projectRepository;
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final NotificationService notificationService;
 
     public RazorpayService(ProjectRepository projectRepository,
                            PaymentRepository paymentRepository,
-                           UserRepository userRepository) {
+                           UserRepository userRepository,
+                           EmailService emailService,
+                           NotificationService notificationService) {
         this.projectRepository = projectRepository;
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -139,6 +145,71 @@ public class RazorpayService {
         projectRepository.save(project);
 
         logger.info("Payment completed: {} for project: {}", razorpayPaymentId, projectId);
+
+        // Dispatch notifications (Email receipt + In-app notification)
+        try {
+            String currency = payment.getCurrency() != null ? payment.getCurrency() : "INR";
+
+            // 1. In-App Notification for Client
+            notificationService.createNotification(
+                    clientId,
+                    "Payment Successful",
+                    "Your payment of " + currency + " " + payment.getAmount() + " for '" + project.getTitle() + "' was successfully processed.",
+                    "PAYMENT_SUCCESS",
+                    "/workspace/" + project.getId()
+            );
+
+            // 2. Email Receipt to Client
+            if (client != null && client.getEmail() != null) {
+                emailService.sendPaymentSuccessEmailToClient(
+                        client.getEmail(),
+                        client.getDisplayName(),
+                        freelancer != null ? freelancer.getDisplayName() : "Freelancer",
+                        project.getTitle(),
+                        payment.getAmount(),
+                        currency,
+                        razorpayPaymentId,
+                        razorpayOrderId
+                );
+            }
+
+            // 3. In-App & Email Notification for Freelancer
+            if (freelancer != null) {
+                notificationService.createNotification(
+                        freelancer.getId(),
+                        "Payment Received! 💰",
+                        "Payment of " + currency + " " + payment.getAmount() + " for '" + project.getTitle() + "' has been released by " + payment.getClientName() + ".",
+                        "PAYMENT_RECEIVED",
+                        "/workspace/" + project.getId()
+                );
+
+                if (freelancer.getEmail() != null) {
+                    emailService.sendPaymentReceivedEmailToFreelancer(
+                            freelancer.getEmail(),
+                            freelancer.getDisplayName(),
+                            client != null ? client.getDisplayName() : "Client",
+                            project.getTitle(),
+                            payment.getAmount(),
+                            currency,
+                            razorpayPaymentId
+                    );
+                }
+            }
+
+            // 4. Platform notification to the configured admin address
+            emailService.sendAdminPaymentNotification(
+                    project.getTitle(),
+                    payment.getClientName(),
+                    payment.getFreelancerName(),
+                    payment.getAmount(),
+                    currency,
+                    razorpayPaymentId,
+                    razorpayOrderId
+            );
+        } catch (Exception e) {
+            logger.error("Error dispatching post-payment notifications: {}", e.getMessage(), e);
+        }
+
         return saved;
     }
 

@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:10000}
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -7,7 +7,7 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI}
+      uri: ${MONGODB_URI:mongodb://localhost:27017/freelancer_marketplace}
       auto-index-creation: true
 
     redis:
@@ -18,14 +18,34 @@ spring:
   cache:
     type: none
 
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
+
 app:
+  notifications:
+    admin-email: ${ADMIN_NOTIFICATION_EMAIL:}
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:local-development-jwt-secret-change-me-before-deploy}
     expiration-ms: 604800000 # 7 days
   razorpay:
-    key-id: ${RAZORPAY_KEY_ID}
-    key-secret: ${RAZORPAY_KEY_SECRET}
-    webhook-secret: ${RAZORPAY_WEBHOOK_SECRET}
+    key-id: ${RAZORPAY_KEY_ID:}
+    key-secret: ${RAZORPAY_KEY_SECRET:}
+    webhook-secret: ${RAZORPAY_WEBHOOK_SECRET:}
     currency: INR
 
 springdoc:

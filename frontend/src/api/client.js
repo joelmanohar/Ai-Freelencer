@@ -75,7 +75,15 @@ export const paymentApi = {
   }),
   verify: (data) => api.post('/payments/verify', data),
   getMy: () => api.get('/payments/my'),
-  getAll: () => api.get('/payments/all')
+  getAll: () => api.get('/payments/all'),
+  testEmail: () => api.post('/payments/test-email')
+};
+
+export const notificationApi = {
+  getAll: () => api.get('/notifications'),
+  getUnreadCount: () => api.get('/notifications/unread-count'),
+  markAsRead: (id) => api.put(`/notifications/${id}/read`),
+  markAllAsRead: () => api.put('/notifications/read-all')
 };
 
 export const reviewApi = {

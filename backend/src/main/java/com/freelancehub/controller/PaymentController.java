@@ -27,10 +27,34 @@ public class PaymentController {
 
     private final RazorpayService razorpayService;
     private final PaymentRepository paymentRepository;
+    private final com.freelancehub.service.EmailService emailService;
 
-    public PaymentController(RazorpayService razorpayService, PaymentRepository paymentRepository) {
+    public PaymentController(RazorpayService razorpayService,
+                             PaymentRepository paymentRepository,
+                             com.freelancehub.service.EmailService emailService) {
         this.razorpayService = razorpayService;
         this.paymentRepository = paymentRepository;
+        this.emailService = emailService;
+    }
+
+    @PostMapping("/test-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Send a test payment notification email")
+    public ResponseEntity<?> sendTestEmail() {
+        if (!emailService.isConfigured()) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(Map.of("message", "SMTP settings and admin notification email are required."));
+        }
+        emailService.sendAdminPaymentNotification(
+                "Test Project Milestone",
+                "Demo Client",
+                "Demo Freelancer",
+                5000.0,
+                "INR",
+                "pay_test_" + System.currentTimeMillis(),
+                "order_test_" + System.currentTimeMillis()
+        );
+        return ResponseEntity.ok(Map.of("message", "Test email queued."));
     }
 
     @PostMapping("/create-order")
