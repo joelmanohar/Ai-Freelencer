@@ -1314,6 +1314,9 @@ body { background: #fff; }
 .admin-users-page__profile-link:hover { color:#4f46e5; background:#eef2ff; }
 .admin-users-page__empty { padding:36px!important; color:var(--slate-500)!important; text-align:center; }
 .admin-users-page__error { margin:16px; padding:12px; color:#b42318; background:#fff4f2; border-radius:9px; font-size:13px; }
+.admin-users-page__pagination { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 16px; color:var(--slate-500); border-bottom:1px solid var(--slate-100); font-size:12px; }
+.admin-users-page__pagination > div { display:flex; align-items:center; gap:12px; }
+.admin-users-page__pagination .btn { min-height:34px; padding:0 11px; font-size:12px; }
 @media (max-width:700px) {
   .admin-users-page { padding:28px 0 60px; }
   .admin-users-page__heading { align-items:flex-start; }
@@ -1322,4 +1325,6 @@ body { background: #fff; }
   .admin-users-page__toolbar { flex-wrap:wrap; }
   .admin-users-page__search { flex-basis:100%; }
   .admin-users-page__result-count { margin-left:auto; }
+  .admin-users-page__pagination { align-items:flex-start; flex-direction:column; }
+  .admin-users-page__pagination > div { width:100%; justify-content:space-between; }
 }

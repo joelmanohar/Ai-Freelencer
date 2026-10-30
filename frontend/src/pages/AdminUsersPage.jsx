@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom';
 import { Search, Users, UserRound, RefreshCw, ArrowUpRight } from 'lucide-react';
 import { userApi } from '../api/client';
 
+const LARGE_DIRECTORY_THRESHOLD = 10_000;
+const LARGE_DIRECTORY_PAGE_SIZE = 2;
+
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [query, setQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('ALL');
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -37,6 +41,13 @@ export default function AdminUsersPage() {
 
   const clients = users.filter(user => user.role?.toUpperCase() === 'CLIENT').length;
   const freelancers = users.filter(user => user.role?.toUpperCase() === 'FREELANCER').length;
+  const isLargeDirectory = filteredUsers.length > LARGE_DIRECTORY_THRESHOLD;
+  const pageCount = isLargeDirectory ? Math.ceil(filteredUsers.length / LARGE_DIRECTORY_PAGE_SIZE) : 1;
+  const visibleUsers = isLargeDirectory
+    ? filteredUsers.slice(page * LARGE_DIRECTORY_PAGE_SIZE, (page + 1) * LARGE_DIRECTORY_PAGE_SIZE)
+    : filteredUsers;
+
+  useEffect(() => { setPage(0); }, [query, roleFilter]);
 
   return (
     <section className="admin-users-page">
@@ -83,6 +94,16 @@ export default function AdminUsersPage() {
           </div>
 
           {error && <div className="admin-users-page__error" role="alert">{error}</div>}
+          {isLargeDirectory && (
+            <div className="admin-users-page__pagination" aria-label="User table pagination">
+              <span>Showing {page * LARGE_DIRECTORY_PAGE_SIZE + 1}–{Math.min((page + 1) * LARGE_DIRECTORY_PAGE_SIZE, filteredUsers.length)} of {filteredUsers.length}</span>
+              <div>
+                <button type="button" className="btn btn-secondary" onClick={() => setPage(current => Math.max(0, current - 1))} disabled={page === 0}>Previous</button>
+                <span>Page {page + 1} of {pageCount}</span>
+                <button type="button" className="btn btn-secondary" onClick={() => setPage(current => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1}>Next</button>
+              </div>
+            </div>
+          )}
           <div className="admin-users-page__table-scroll">
             <table className="admin-users-page__table">
               <thead>
@@ -91,7 +112,7 @@ export default function AdminUsersPage() {
               <tbody>
                 {loading ? (
                   <tr><td colSpan="6" className="admin-users-page__empty">Loading user records…</td></tr>
-                ) : filteredUsers.length ? filteredUsers.map(user => (
+                ) : filteredUsers.length ? visibleUsers.map(user => (
                   <tr key={user.id}>
                     <td>
                       <div className="admin-users-page__user">
