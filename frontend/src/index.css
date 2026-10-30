@@ -136,65 +136,6 @@ button, input, select, textarea {
   box-shadow: 0 12px 32px rgba(10, 17, 40, .24), 0 0 0 6px rgba(255,255,255,.88);
 }
 
-/* Animated assistant launcher and Codex-inspired chat styling. */
-.freelancer-bot__launcher {
-  width: 68px;
-  height: 68px;
-  color: #fff;
-  background: linear-gradient(145deg, #111827 8%, #202b52 58%, #6246d9 100%);
-  border: 1px solid rgba(255,255,255,.68);
-  box-shadow: 0 12px 34px rgba(35, 31, 82, .35), 0 0 0 5px rgba(255,255,255,.82);
-  animation: freelancer-bot-float 3s ease-in-out infinite, freelancer-bot-glow 3s ease-in-out infinite;
-}
-
-.freelancer-bot__launcher::before,
-.freelancer-bot__launcher::after {
-  position: absolute;
-  inset: -7px;
-  border: 1px solid rgba(112, 91, 255, .28);
-  border-radius: 50%;
-  content: '';
-  animation: freelancer-bot-ring 3s ease-out infinite;
-  pointer-events: none;
-}
-
-.freelancer-bot__launcher::after { animation-delay: 1.5s; }
-.freelancer-bot__orb { display: grid; place-items: center; filter: drop-shadow(0 0 10px rgba(186, 175, 255, .9)); animation: freelancer-bot-star 3s ease-in-out infinite; }
-.freelancer-bot__launcher:hover { transform: translateY(-4px) scale(1.06); }
-
-.freelancer-bot__panel {
-  border-color: rgba(109, 91, 255, .18);
-  border-radius: 22px;
-  box-shadow: 0 24px 80px rgba(16, 24, 48, .26), 0 0 0 1px rgba(255,255,255,.65);
-}
-
-.freelancer-bot__header {
-  padding: 16px;
-  background: linear-gradient(120deg, #101626, #1a2341 70%, #34276e);
-}
-
-.freelancer-bot__avatar {
-  color: #fff;
-  background: linear-gradient(145deg, #34305f, #7964ec);
-  box-shadow: 0 4px 16px rgba(119, 99, 239, .32);
-}
-
-.freelancer-bot__avatar img { display: none; }
-.freelancer-bot__messages { padding: 18px 16px; background: radial-gradient(ellipse at top right, #f3f1ff 0, transparent 43%), #fbfcff; }
-.freelancer-bot__message { font-size: 13px; }
-.freelancer-bot__message--assistant { border-radius: 16px 16px 16px 5px; }
-.freelancer-bot__message--user { background: linear-gradient(135deg, #252b45, #5141a3); border-radius: 16px 16px 5px 16px; }
-.freelancer-bot__suggestions button { border-color: #dedcf5; border-radius: 999px; }
-.freelancer-bot__form { padding: 12px; }
-.freelancer-bot__form textarea { min-width: 0; flex: 1; height: 44px; max-height: 100px; resize: none; padding: 12px 13px; color: var(--slate-900); background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; outline: none; font: inherit; font-size: 13px; }
-.freelancer-bot__form textarea:focus { border-color: #8674ec; box-shadow: 0 0 0 3px rgba(119, 99, 239, .12); }
-.freelancer-bot__form button { border-radius: 14px; background: linear-gradient(145deg, #252b45, #5747ac); }
-.freelancer-bot__privacy { padding: 0 12px 12px; }
-
-@keyframes freelancer-bot-glow { 0%, 100% { box-shadow: 0 12px 34px rgba(35,31,82,.3), 0 0 0 5px rgba(255,255,255,.82); } 50% { box-shadow: 0 14px 40px rgba(91,70,210,.48), 0 0 0 5px rgba(255,255,255,.82); } }
-@keyframes freelancer-bot-ring { 0% { transform: scale(.88); opacity: .7; } 100% { transform: scale(1.35); opacity: 0; } }
-@keyframes freelancer-bot-star { 0%, 100% { transform: rotate(-8deg) scale(.96); } 50% { transform: rotate(8deg) scale(1.08); } }
-
 .freelancer-bot__panel {
   position: absolute;
   right: 0;
@@ -265,6 +206,49 @@ button, input, select, textarea {
   .freelancer-bot__launcher, .freelancer-bot__launcher::before, .freelancer-bot__launcher::after, .freelancer-bot__orb, .freelancer-bot__panel, .freelancer-bot__typing span { animation: none; }
   .freelancer-bot__launcher, .freelancer-bot__form button { transition: none; }
 }
+
+/* Animated assistant launcher and project-matched chatbot styling. */
+.freelancer-bot__launcher {
+  width: 68px;
+  height: 68px;
+  color: #fff;
+  background: linear-gradient(145deg, #111827 8%, #202b52 58%, #6246d9 100%);
+  border: 1px solid rgba(255,255,255,.68);
+  box-shadow: 0 12px 34px rgba(35, 31, 82, .35), 0 0 0 5px rgba(255,255,255,.82);
+  animation: freelancer-bot-float 3s ease-in-out infinite, freelancer-bot-glow 3s ease-in-out infinite;
+}
+
+.freelancer-bot__launcher::before,
+.freelancer-bot__launcher::after {
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(112, 91, 255, .28);
+  border-radius: 50%;
+  content: '';
+  animation: freelancer-bot-ring 3s ease-out infinite;
+  pointer-events: none;
+}
+
+.freelancer-bot__launcher::after { animation-delay: 1.5s; }
+.freelancer-bot__orb { display: grid; place-items: center; filter: drop-shadow(0 0 10px rgba(186, 175, 255, .9)); animation: freelancer-bot-star 3s ease-in-out infinite; }
+.freelancer-bot__launcher:hover { transform: translateY(-4px) scale(1.06); }
+.freelancer-bot__panel { border-color: rgba(109, 91, 255, .18); border-radius: 22px; box-shadow: 0 24px 80px rgba(16,24,48,.26), 0 0 0 1px rgba(255,255,255,.65); }
+.freelancer-bot__header { padding: 16px; background: linear-gradient(120deg, #101626, #1a2341 70%, #34276e); }
+.freelancer-bot__avatar { color: #6246d9; background: #f0edff; box-shadow: 0 4px 16px rgba(119,99,239,.32); }
+.freelancer-bot__messages { padding: 18px 16px; background: radial-gradient(ellipse at top right, #f3f1ff 0, transparent 43%), #fbfcff; }
+.freelancer-bot__message { font-size: 13px; }
+.freelancer-bot__message--assistant { border-radius: 16px 16px 16px 5px; }
+.freelancer-bot__message--user { background: linear-gradient(135deg, #252b45, #5141a3); border-radius: 16px 16px 5px 16px; }
+.freelancer-bot__suggestions button { border-color: #dedcf5; border-radius: 999px; }
+.freelancer-bot__form { padding: 12px; }
+.freelancer-bot__form textarea { min-width: 0; flex: 1; height: 44px; max-height: 100px; resize: none; padding: 12px 13px; color: var(--slate-900); background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; outline: none; font: inherit; font-size: 13px; }
+.freelancer-bot__form textarea:focus { border-color: #8674ec; box-shadow: 0 0 0 3px rgba(119,99,239,.12); }
+.freelancer-bot__form button { border-radius: 14px; background: linear-gradient(145deg, #252b45, #5747ac); }
+.freelancer-bot__privacy { padding: 0 12px 12px; }
+
+@keyframes freelancer-bot-glow { 0%, 100% { box-shadow: 0 12px 34px rgba(35,31,82,.3), 0 0 0 5px rgba(255,255,255,.82); } 50% { box-shadow: 0 14px 40px rgba(91,70,210,.48), 0 0 0 5px rgba(255,255,255,.82); } }
+@keyframes freelancer-bot-ring { 0% { transform: scale(.88); opacity: .7; } 100% { transform: scale(1.35); opacity: 0; } }
+@keyframes freelancer-bot-star { 0%, 100% { transform: rotate(-8deg) scale(.96); } 50% { transform: rotate(8deg) scale(1.08); } }
 
 .container {
   max-width: 1200px;
