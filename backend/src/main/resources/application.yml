@@ -48,6 +48,11 @@ app:
     webhook-secret: ${RAZORPAY_WEBHOOK_SECRET:}
     currency: INR
 
+openrouter:
+  api-key: ${OPENROUTER_API_KEY:}
+  model: ${OPENROUTER_MODEL:nvidia/nemotron-3-ultra-550b-a55b:free}
+  base-url: ${OPENROUTER_BASE_URL:https://openrouter.ai/api/v1}
+
 springdoc:
   api-docs:
     path: /api-docs

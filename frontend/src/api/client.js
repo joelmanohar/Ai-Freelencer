@@ -102,4 +102,8 @@ export const adminApi = {
   getStats: () => api.get('/admin/stats')
 };
 
+export const aiChatApi = {
+  ask: (message, history = []) => api.post('/ai-chat', { message, history })
+};
+
 export default api;

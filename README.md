@@ -22,6 +22,7 @@ FreelanceHub is a modern full-stack freelancer marketplace web application desig
 - **Spring WebSocket + STOMP** (Real-time bidirectional chat in project workspaces)
 - **Redis & In-Memory Fallback** (Caching and API rate limiting)
 - **Razorpay Java Service** (Payment order generation and verification)
+- **OpenRouter NVIDIA Nemotron 3 Ultra** (Freelancer-focused AI help chat)
 - **SpringDoc OpenAPI 3 / Swagger UI** (Interactive API documentation)
 - **Apache Maven** (Build automation)
 
@@ -40,6 +41,12 @@ The application automatically seeds 3 demo accounts upon starting:
 | **Admin** | `admin@demo.com` | `demo1234` | Access platform stats, manage users, and add/delete categories |
 
 > 💡 **Quick Login:** On the login screen, click the **Client**, **Freelancer**, or **Admin** demo buttons for instant one-click login!
+
+---
+
+## 🤖 Freelancer AI Assistant
+
+The floating assistant uses OpenRouter's NVIDIA Nemotron 3 Ultra free model. Configure `OPENROUTER_API_KEY` as a backend environment secret; optionally override `OPENROUTER_MODEL` or `OPENROUTER_BASE_URL`. Never put the API key in frontend variables or commit it to Git. Chat prompts are sent to OpenRouter and its selected model provider, so users should not submit confidential or personal information.
 
 ---
 

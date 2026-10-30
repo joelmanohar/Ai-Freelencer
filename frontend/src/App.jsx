@@ -4,6 +4,7 @@ import { useAuthStore } from './store/authStore';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FreelancerBot from './components/FreelancerBot';
 
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -125,6 +126,7 @@ function AppContent() {
         </Routes>
       </main>
       {showFooter && <Footer />}
+      <FreelancerBot />
     </div>
   );
 }
